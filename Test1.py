@@ -203,14 +203,15 @@ def Menu(bdfile,path):
                 nf=str(len(ToDel))
                 print("Foram encontrados mais de um usuário com o critério informado. Selecione o que deseja remover:\n")
                 #print("{0:{space}}{1:20}{2:12}{3:10}".format("","Nome","Matrícula","Data de matrícula",space=(len(nf)+4)))
-                print("-"*(42+len(nf)+1))
+                print(" ".ljust((len(nf)+4)),"{:20}{:12}{:10}".format("Nome","Matrícula","Data de matrícula"))
+                print("-"*(42+len(nf)+5))
                 ct=0
                 for i in ToDel:
                     ct+=1
                     #print("{:{t}} - {:20}{:12}{:10}".format(ct,i[0],i[1],i[2],t=len(nf)+1))
-                    print(str(ct).ljust(len(nf),' '),i[0].ljust(20,' '),i[1].ljust(12,' '),i[2].ljust(10,' '))
-                    #ljust put the content more to left side of the reserved space
-                    #rjust put it more to right side
+                    print((str(ct)+"-").rjust(len(nf),'0'),"{:20}{:12}{:10}".format(i[0],i[1],i[2]))
+                    #ljust(a1,a2) put the content more to left side of the reserved space, a1 is the space that will be, a2 is what will fill the unused space
+                    #rjust(a1,a2) put it more to right side, a1 is the space that will be, a2 is what will fill the unused space
                 rgToDel=0
         if(op=='3'):
             findMethod=0
