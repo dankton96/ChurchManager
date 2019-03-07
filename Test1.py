@@ -209,7 +209,10 @@ def Menu(bdfile,path):
                 for i in ToDel:
                     ct+=1
                     #print("{:{t}} - {:20}{:12}{:10}".format(ct,i[0],i[1],i[2],t=len(nf)+1))
-                    print((str(ct)+"-").rjust(len(nf),'0'),"{:20}{:12}{:10}".format(i[0],i[1],i[2]))
+                    dtxt=str(i[2].value)
+                    data=datetime.date(int(dtxt[0:4]),int(dtxt[5:7]),int(dtxt[8:10]))
+                    print(i[0].value)
+                    #print((str(ct)+"-").rjust(len(nf),'0'),"{:20}{:12}{:10}".format(i[0].value,i[1].value,data))
                     #ljust(a1,a2) put the content more to left side of the reserved space, a1 is the space that will be, a2 is what will fill the unused space
                     #rjust(a1,a2) put it more to right side, a1 is the space that will be, a2 is what will fill the unused space
                 rgToDel=0
