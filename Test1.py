@@ -204,15 +204,15 @@ def Menu(bdfile,path):
                 print("Foram encontrados mais de um usuário com o critério informado. Selecione o que deseja remover:\n")
                 #print("{0:{space}}{1:20}{2:12}{3:10}".format("","Nome","Matrícula","Data de matrícula",space=(len(nf)+4)))
                 print(" ".ljust((len(nf)+4)),"{:20}{:12}{:10}".format("Nome","Matrícula","Data de matrícula"))
-                print("-"*(42+len(nf)+5))
+                print("-"*(50+len(nf)+5))
                 ct=0
                 for i in ToDel:
                     ct+=1
                     #print("{:{t}} - {:20}{:12}{:10}".format(ct,i[0],i[1],i[2],t=len(nf)+1))
                     dtxt=str(i[2].value)
                     data=datetime.date(int(dtxt[0:4]),int(dtxt[5:7]),int(dtxt[8:10]))
-                    print(i[0].value)
-                    #print((str(ct)+"-").rjust(len(nf),'0'),"{:20}{:12}{:10}".format(i[0].value,i[1].value,data))
+                    #print(data)
+                    print((str(ct)+"- ").rjust(len(nf),'0'),"{:15}{:12}".format(i[0].value,i[1].value),"{:>20}".format(str(data)))
                     #ljust(a1,a2) put the content more to left side of the reserved space, a1 is the space that will be, a2 is what will fill the unused space
                     #rjust(a1,a2) put it more to right side, a1 is the space that will be, a2 is what will fill the unused space
                 rgToDel=0
