@@ -84,7 +84,7 @@ def DelUser(reg,row):
         reg['Usuarios'].delete_rows(row[1])
         #delete the page of the user (which contains the user payments)
         sheetToDelName="Pg_User"+str(row[1])
-        reg.remove_sheet(sheet2del)
+        reg.remove_sheet(sheetToDelName)
         return "RemotionSuccess"
     else:
         if([row[0],row[1],date]not in reg):
@@ -200,10 +200,10 @@ def Menu(bdfile,path):
                 target=input("Insira a data de matrícula do usuário a ser removido:")
             ToDel=FindCad(findMethod,bdfile,target)
             if(len(ToDel)>1):
-                ClearScreen()
                 SelectedReg=0
                 validOp=[str(c) for c in range(1,(len(ToDel)+1))]
                 while(SelectedReg not in validOp):
+                    ClearScreen()
                     nf=str(len(ToDel))
                     print("Foram encontrados mais de um usuário com o critério informado. Selecione o que deseja remover:\n")
                     print(" ".ljust((len(nf)+4)),"{:20}{:12}{:10}".format("Nome","Matrícula","Data de matrícula"))
@@ -217,6 +217,9 @@ def Menu(bdfile,path):
                         #ljust(a1,a2) put the content more to left side of the reserved space, a1 is the space that will be, a2 is what will fill the unused space
                         #rjust(a1,a2) put it more to right side, a1 is the space that will be, a2 is what will fill the unused space
                     SelectedReg=input()
+                #nome, matricula, data
+                DelUser(bdfile,[ToDel[SelectedReg][0],ToDel[SelectedReg][1],dtxt])
+                
         if(op=='3'):
             findMethod=0
             while(findMethod not in searchMethods):
