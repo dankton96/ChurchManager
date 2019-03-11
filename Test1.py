@@ -219,6 +219,10 @@ def Menu(bdfile,path):
                     SelectedReg=input()
                 #nome, matricula, data
                 DelUser(bdfile,[ToDel[SelectedReg][0],ToDel[SelectedReg][1],dtxt])
+            else:
+                dtxt=str(ToDel[2].value)
+                data=datetime.date(int(dtxt[0:4]),int(dtxt[5:7]),int(dtxt[8:10]))
+                DelUser(bdfile,[ToDel[0],ToDel[1],dtxt])
                 
         if(op=='3'):
             findMethod=0
