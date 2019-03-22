@@ -246,10 +246,11 @@ def Menu(bdfile,path):
                 target=input("Insira a data de matrícula a ser localizada:")
             res=FindCad(findMethod,bdfile,target)
             print("{:20}{:12}{:10}".format("Nome","Matrícula","Data de matrícula"))
-            print("-"*42)
+            print("-"*50)
             for i in res:
-                print("{:20}{:<12}{:10}".format(i[0].value,i[1].value,i[2].value))
-            var=input("Pressione enter para continuar")
+                data=str(i[2].value)
+                print("{:20}{:<12}{:10}".format(i[0].value,i[1].value,data[:10]))
+            var=input("\n\nPressione enter para continuar")
         if(op=='4'):
             print("Nao implementada ainda")
             time.sleep(5)
