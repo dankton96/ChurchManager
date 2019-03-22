@@ -105,8 +105,11 @@ def ClearScreen():
     if(platform.system()=="Windows"): os.system("cls")
     if(platform.system()=="Linux"): os.system("clear")
 ##########################################################################################################
-def CheckHeaders(database):
-            return (database['Usuarios']['A1']=="Nome" and database['Usuarios']['B1']=="Matricula" and database['Usuarios']['C1']=="DataMatricula")
+def CheckHeadersUsers(database):
+    return (database["Usuarios"]['A1']=="Nome" and database["Usuarios"]['B1']=="Matricula" and database["Usuarios"]['C1']=="DataMatricula")       
+##########################################################################################################
+def CheckHeadersPersonalPage(page):
+    return (page['A1']=="Valor" and page['B1']=="Vencimento" and page['C1']=="ValorPago")
 ##########################################################################################################
 def InitBD(reg,filename):
     ct=0
@@ -114,12 +117,18 @@ def InitBD(reg,filename):
         if(ct==0):
                 if(page.title!="Usuarios"):
                     page.title="Usuarios"
-                if(page.title=="Usuarios"):
-                    if(not(CheckHeaders(reg))):
-                        page['A1']="Nome"
-                        page['B1']="Matricula"
-                        page['C1']="DataMatricula"
-                ct+=1
+                    ct+=1
+        if(page.title=="Usuarios"):
+                if(not(CheckHeadersUsers(reg))):
+                    page['A1']="Nome"
+                    page['B1']="Matricula"
+                    page['C1']="DataMatricula"
+        else:
+            if("Pg_User" in page.title):
+                if(not(CheckHeadersPersonalPage(page))):
+                   page['A1']="Valor"
+                   page['B1']="Vencimento"
+                   page['C1']="ValorPago"
     ClearNoneInWorkbook(filename)
     reg.save(filename)
 ##########################################################################################################
@@ -159,7 +168,7 @@ rel={"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,"July":7,"Aug
 menuTxt="""
 1)Adicionar novo cadastro
 2)Remover um cadastro existente
-3)Procurar cadastro
+3)Consultar cadastro
 4)Registrar pagamento de dízimo
 5)Gerar carteira de fiel
 6)Sair
@@ -239,7 +248,8 @@ def Menu(bdfile,path):
             print("{:20}{:12}{:10}".format("Nome","Matrícula","Data de matrícula"))
             print("-"*42)
             for i in res:
-                print("{:20}{:12}{:10}".format(i[0],i[1],i[2]))
+                print("{:20}{:<12}{:10}".format(i[0].value,i[1].value,i[2].value))
+            var=input("Pressione enter para continuar")
         if(op=='4'):
             print("Nao implementada ainda")
             time.sleep(5)
