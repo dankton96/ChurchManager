@@ -64,8 +64,9 @@ def AddUser(reg,row):
         if(i==None): return "InvalidRegError"
     if(not(isDateValid(row[2]))):
         return "InvalidDateError"
-    existingReg=[i[1] for i in reg['Usuarios']][1:]
-    if(row[1] in existingReg): return "UserAlreadyCadError"
+    if(not(isPageEmpty(reg['Usuarios']))):
+        existingReg=[i[1].value for i in reg['Usuarios']]
+        if(row[1] in existingReg): return "UserAlreadyCadError"
     date=datetime.date(row[2][2],row[2][1],row[2][0])
     reg['Usuarios'].append([row[0],row[1],date])
     #create the page of the user (which contains the user payments)
@@ -117,18 +118,22 @@ def InitBD(reg,filename):
         if(ct==0):
                 if(page.title!="Usuarios"):
                     page.title="Usuarios"
-                    ct+=1
-        if(page.title=="Usuarios"):
-                if(not(CheckHeadersUsers(reg))):
                     page['A1']="Nome"
                     page['B1']="Matricula"
                     page['C1']="DataMatricula"
+                    ct+=1
         else:
-            if("Pg_User" in page.title):
-                if(not(CheckHeadersPersonalPage(page))):
-                   page['A1']="Valor"
-                   page['B1']="Vencimento"
-                   page['C1']="ValorPago"
+            if(page.title=="Usuarios"):
+                    if(not(CheckHeadersUsers(reg))):
+                        page['A1']="Nome"
+                        page['B1']="Matricula"
+                        page['C1']="DataMatricula"
+            else:
+                if("Pg_User" in page.title):
+                    if(not(CheckHeadersPersonalPage(page))):
+                       page['A1']="Valor"
+                       page['B1']="Vencimento"
+                       page['C1']="ValorPago"
     ClearNoneInWorkbook(filename)
     reg.save(filename)
 ##########################################################################################################
@@ -138,16 +143,19 @@ def GetNewRegCode(bdname):
 ##########################################################################################################
 def FindCad(method,bd,toFind):
     Found=[]
+    i=0
     for line in bd['Usuarios']:
-        if(method=='1'):
-            if(toFind in line[0].value):
-                Found.append([line[0],line[1],line[2]])
-        if(method=='2'):
-            if(line[1]==toFind):
-                Found.append([line[0],line[1],line[2]])
-        if(method=='3'):
-            if(line[2]==toFind):
-                Found.append([line[0],line[1],line[2]])
+        if(i!=0):
+            if(method=='1'):
+                if(toFind in line[0].value):
+                    Found.append([line[0],line[1],line[2]])
+            if(method=='2'):
+                if(int(line[1].value)==toFind):
+                    Found.append([line[0],line[1],line[2]])
+            if(method=='3'):
+                if(line[2]==toFind):
+                    Found.append([line[0],line[1],line[2]])
+        i+=1
     return Found
 ##########################################################################################################
 def isStrADate(dateTxt):#dd/mm/aaaa
@@ -196,6 +204,7 @@ def Menu(bdfile,path):
             d=int(time.strftime("%d"))
             code=GetNewRegCode(path)
             AddUser(bdfile,[name,code,[d,m,y]])
+            ClearNoneInWorkbook(path)
         if(op=='2'):
             findMethod=0
             while(findMethod not in searchMethods):
